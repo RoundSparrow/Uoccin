@@ -293,6 +293,9 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.OnFr
 			case R.id.action_search:
 				searchDialog();
 				return true;
+			case R.id.action_drivetest:
+				startActivity(new Intent(this, com.example.drivequickstart.MainActivity.class));
+				return true;
 			case R.id.action_settings:
 				startActivity(new Intent(this, SettingsActivity.class));
 				return true;

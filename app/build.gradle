@@ -36,13 +36,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
         debug {
-            applicationIdSuffix ".debug"
+            //applicationIdSuffix ".debug"
         }
     }
 
     productFlavors {
         demo {
-            applicationId "net.ggelardi.uoccin.demo"
+            //applicationId "net.ggelardi.uoccin.demo"
             versionName "1.6-demo"
         }
         googleplay {

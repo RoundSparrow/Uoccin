@@ -181,5 +181,6 @@
     <string name="sample_runtime">107 min</string>
     <string name="sample_awards">Won 1 Oscar. Another 32 wins &amp; 93 nominations.</string>
     <string name="msg_restore_2c">Google Authentication failed on restore attempt</string>
+    <string name="action_drivetest">Drive Test0</string>
 
 </resources>
