@@ -14,6 +14,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
@@ -111,6 +112,10 @@ public class SettingsFragment extends PreferenceFragment {
 				session.setDriveUserAccount(accsel.name);
 				cpdauth.setSummary(accsel.name);
 			}
+		}
+		else
+		{
+			Log.w(MainActivity.TAG, "Unrecognized onActivityResult " + requestCode + " " + data.toString());
 		}
 	}
 	

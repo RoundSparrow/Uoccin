@@ -53,7 +53,7 @@ import com.google.android.gms.common.AccountPicker;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 
 public class MainActivity extends AppCompatActivity implements BaseFragment.OnFragmentListener {
-	private static final String TAG = "MainActivity";
+	public static final String TAG = "MainActivity";
 	private static final int REQUEST_ACCOUNT_PICKER = 1;
 	private static final int REQUEST_AUTHORIZATION = 2;
 	
@@ -310,8 +310,14 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.OnFr
 	
 	@Override
 	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-		if (requestCode == REQUEST_ACCOUNT_PICKER && resultCode == RESULT_OK && data != null)
+		if (requestCode == REQUEST_ACCOUNT_PICKER && resultCode == RESULT_OK && data != null) {
 			session.setDriveUserAccount(data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME));
+			Log.i(TAG, "set Google Drive UserAccount: " + data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME));
+		}
+		else
+		{
+			Log.w(TAG, "Unrecognized onActivityResult " + requestCode + " " + data.toString());
+		}
 	}
 	
 	@Override
