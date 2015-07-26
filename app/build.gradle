@@ -20,13 +20,10 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:22.2.1'
-    // compile 'com.android.support:support-v7:22.+'
-
+    compile 'com.android.support:support-v4:22.+'
     compile 'com.android.support:appcompat-v7:22.+'
 
     compile 'com.google.android.gms:play-services:7.5.0'
-
 
     compile 'com.google.http-client:google-http-client-gson:1.20.0'
     compile 'com.google.code.gson:gson:2.3.1'
@@ -34,36 +31,23 @@ dependencies {
     compile files('libs/commons-collections4-4.0.jar')
     compile files('libs/cwac-wakeful-1.0.5.jar')
 
-    //compile files('libs/genson-1.2.jar')
     compile 'com.owlike:genson:1.3'
 
-    // compile files('libs/google-api-client-1.20.0.jar')
     compile 'com.google.api-client:google-api-client:1.20.0'
-    // compile files('libs/google-api-client-android-1.20.0.jar')
     compile 'com.google.api-client:google-api-client-android:1.20.0'
 
-    // compile files('libs/google-api-services-drive-v2-rev164-1.20.0.jar')
     compile 'com.google.apis:google-api-services-drive:v2-rev179-1.20.0'
 
     // DO NOT use on Android: compile files('libs/google-http-client-1.20.0.jar')
-    // compile files('libs/google-http-client-android-1.20.0.jar')
     compile 'com.google.http-client:google-http-client-android:1.20.0'
-
-    // compile files('libs/google-oauth-client-1.20.0.jar')
     compile 'com.google.oauth-client:google-oauth-client:1.20.0'
 
-    // compile files('libs/jackson-core-2.1.3.jar')
     compile 'com.fasterxml.jackson.core:jackson-core:2.6.0'
+
     compile files('libs/jsr305-1.3.9.jar')
 
-    // compile files('libs/okhttp-2.3.0.jar')
     compile 'com.squareup.okhttp:okhttp:2.4.0'
-    // compile files('libs/okhttp-urlconnection-2.3.0.jar')
-    // compile files('libs/okio-1.4.0.jar')
-
-    // compile files('libs/picasso-2.5.2.jar')
     compile 'com.squareup.picasso:picasso:2.5.2'
-    // compile files('libs/retrofit-1.9.0.jar')
     compile 'com.squareup.retrofit:retrofit:1.9.0'
 
     compile 'com.android.support:multidex:'
