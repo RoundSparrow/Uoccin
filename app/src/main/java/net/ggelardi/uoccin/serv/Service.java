@@ -770,14 +770,21 @@ public class Service extends WakefulIntentService {
 			UFile file = genson.deserialize(content, UFile.class);
 			sendNotification(String.format(session.getString(R.string.msg_restore_3),
 				file.movies.keySet().size(), file.series.keySet().size()));
+			int countActual = 0;
 			db.beginTransaction();
 			try {
 				db.delete("movie", null, null);
-				for (String imdb_id: file.movies.keySet())
+				for (String imdb_id: file.movies.keySet()) {
 					file.movies.get(imdb_id).write(db, imdb_id);
+					countActual++;
+				}
+
 				db.delete("series", null, null);
-				for (String tvdb_id: file.series.keySet())
+				for (String tvdb_id: file.series.keySet()) {
 					file.series.get(tvdb_id).write(db, tvdb_id);
+					countActual++;
+				}
+
 				db.delete("queue_out", null, null);
 				db.setTransactionSuccessful();
 			} finally {
@@ -785,7 +792,7 @@ public class Service extends WakefulIntentService {
 			}
 			Movie.resetCache();
 			Series.resetCache();
-			sendNotification(session.getString(R.string.msg_restore_4));
+			sendNotification(String.format(session.getString(R.string.msg_restore_4), countActual));
 			Title.dispatch(OnTitleListener.RELOAD, null);
 		} catch (Exception err) {
 			Log.e(TAG, "driveRestore", err);
