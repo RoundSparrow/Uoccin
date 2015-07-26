@@ -331,7 +331,7 @@ public class Series extends Title {
 		ci = cr.getColumnIndex("airsTime");
 		if (!cr.isNull(ci)) {
 			// airsTimeRaw = cr.getString(ci);
-			airsTimeRaw = "??";
+			airsTimeRaw = "?" + cr.getString(ci);
 			airsTime = cr.getLong(ci);
 		}
 		ci = cr.getColumnIndex("runtime");

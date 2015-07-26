@@ -305,6 +305,9 @@ public class SeriesInfoFragment extends BaseFragment implements OnTitleListener 
 	private void showInfo() {
 		if (img_bann == null)
 			return;
+		if (getActivity() == null)
+			return;
+
 		getActivity().setTitle(series.name);
 		session.picasso(series.banner).resize(pstWidth, pstHeight).into(img_bann);
 		if (pstWidth > 1) {
