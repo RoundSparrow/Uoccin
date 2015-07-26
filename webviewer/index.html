@@ -1,0 +1,48 @@
+<html>
+<head>
+<title>Howdy TeleVision</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="tabletop.js"></script>
+<script type="text/javascript">
+  window.onload = function() { initAlternate1() };
+
+  var public_spreadsheet_url = 'https://docs.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=0AmYzu_s7QHsmdDNZUzRlYldnWTZCLXdrMXlYQzVxSFE&output=html';
+
+  function initAlternate1() {
+    Tabletop.init( { key: public_spreadsheet_url,
+                     callback: showInfo,
+                     simpleSheet: true } )
+  }
+
+  function initAlternate0() {
+    Tabletop.init( { key: '0AmYzu_s7QHsmdDNZUzRlYldnWTZCLXdrMXlYQzVxSFE',
+                   callback: function(data, tabletop)
+                    {
+                        console.log(data)
+    $('#myOutput0').html(JSON.stringify(data));
+    $('#myOutput1').html("hi there output1");
+                        },
+                   simpleSheet: true } )
+ }
+
+  function showInfo(data, tabletop) {
+    alert("Successfully processed!")
+    console.log(data);
+    $('#myOutput0').html(JSON.stringify(data));
+    $('#myOutput1').html("hi there output1");
+  }
+</script>
+
+</head>
+
+<body>
+<h1>Howdy TeleVision</h1>
+
+<div id="myOutput0">myOutput0</div>
+
+<div id="myOutput1">myOutput1</div>
+
+</body>
+</html>
+
