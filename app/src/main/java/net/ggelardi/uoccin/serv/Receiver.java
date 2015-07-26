@@ -65,7 +65,7 @@ public class Receiver extends BroadcastReceiver {
 			ncb = new NotificationCompat.Builder(session.getContext()).setAutoCancel(true);
 			ncb.setSmallIcon(R.drawable.ic_notification_error);
 			ncb.setContentTitle(session.getString(R.string.notif_gac_fail));
-			ncb.setContentText(data.getString("what"));
+			// __!__remove commit e3b1a90b423a8c3588e4b4e4bd3c5a0d2e3e9fb1 ncb.setContentText(data.getString("what"));
 			ncb.setContentIntent(newPI(newAI(SN.CONNECT_FAIL), false));
 			if (session.notificationSound())
 				ncb.setSound(NOTIF_SOUND);
