@@ -137,7 +137,7 @@ public class Service extends WakefulIntentService {
 			// old stuff
 			db.execSQL("delete from movie where " + age + " and watchlist = 0 and collected = 0 and watched = 0");
 			db.execSQL("delete from series where " + age + " and watchlist = 0 and not tvdb_id in " +
-				"(select distinct series from episode where collected = 1 or watched = 1)");
+					"(select distinct series from episode where collected = 1 or watched = 1)");
 			// fields cleaning
 			db.execSQL("update movie set subtitles = null where subtitles = ''");
 			db.execSQL("update episode set subtitles = null where subtitles = ''");
@@ -210,7 +210,7 @@ public class Service extends WakefulIntentService {
 				return;
 			}
 			Series.get(this, (Element) doc.getElementsByTagName("Series").item(0),
-				doc.getElementsByTagName("Episode"));
+					doc.getElementsByTagName("Episode"));
 		} finally {
 			queue.remove(tvdb_id);
 		}
@@ -359,9 +359,18 @@ public class Service extends WakefulIntentService {
 		Log.d(TAG, "checkTVdbNews() end");
 	}
 	
-	private void checkDrive() throws Exception {
+	private boolean checkDrive() throws Exception {
 		if (drive == null)
 			drive = new GSA(this);
+
+		// perhaps a bit inefficient to check rootFolderId every time, but it gives is a positive confirmatio of connection.
+		String rootFolderId = drive.getRootFolderId(true);
+		if (rootFolderId != null)
+			return true;
+		else {
+			Log.e(TAG, "getRootFolderId returned null");
+			return false;
+		}
 	}
 	
 	private void checkGenson() {
@@ -742,7 +751,11 @@ public class Service extends WakefulIntentService {
 		sendNotification(session.getString(R.string.msg_restore_1));
 		SQLiteDatabase db = session.getDB();
 		try {
-			checkDrive();
+			if (! checkDrive())
+			{
+				sendNotification(session.getString(R.string.msg_restore_2c));
+				return;
+			}
 			File bak = drive.getFile(GSA.BACKUP, drive.getRootFolderId(true), null);
 			if (bak == null) {
 				sendNotification(session.getString(R.string.msg_restore_2a));

@@ -19,6 +19,7 @@ import android.util.Log;
 import com.google.android.gms.drive.DriveFolder;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAuthIOException;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpResponse;
@@ -49,7 +50,7 @@ public class GSA {
 	public GSA(Context context) throws Exception {
 		session = Session.getInstance(context);
 		GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(context,
-			Collections.singleton(DriveScopes.DRIVE));
+				Collections.singleton(DriveScopes.DRIVE));
 		credential.setSelectedAccountName(session.driveAccountName());
 		service = new Drive.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(),
 			credential).setApplicationName(session.getString(R.string.app_name)).build();
@@ -59,19 +60,27 @@ public class GSA {
 		if (!TextUtils.isEmpty(rootId))
 			return rootId;
 		Log.d(TAG, "Looking for Uoccin folder...");
-		FileList files = service.files().list().setQ("mimeType = '" + DriveFolder.MIME_TYPE +
-			"' and title = '" + FOLDER + "' and trashed = false").execute();
-		if (files != null && !files.isEmpty() && files.getItems().size() > 0) {
-			Log.d(TAG, "Uoccin folder found");
-			rootId = files.getItems().get(0).getId();
-		} else if (create) {
-			Log.i(TAG, "Creating Uoccin folder...");
-			File body = new File();
-			body.setTitle(FOLDER);
-			body.setMimeType(DriveFolder.MIME_TYPE);
-			rootId = service.files().insert(body).execute().getId();
-		} else
-			Log.w(TAG, "Uoccin folder NOT found");
+
+		try {
+			FileList files = service.files().list().setQ("mimeType = '" + DriveFolder.MIME_TYPE +
+					"' and title = '" + FOLDER + "' and trashed = false").execute();
+			if (files != null && !files.isEmpty() && files.getItems().size() > 0) {
+				Log.d(TAG, "Uoccin folder found");
+				rootId = files.getItems().get(0).getId();
+			} else if (create) {
+				Log.i(TAG, "Creating Uoccin folder...");
+				File body = new File();
+				body.setTitle(FOLDER);
+				body.setMimeType(DriveFolder.MIME_TYPE);
+				rootId = service.files().insert(body).execute().getId();
+			} else
+				Log.w(TAG, "Uoccin folder NOT found");
+		}
+		catch (GoogleAuthIOException ge0)
+		{
+			Log.e(TAG, "GoogleAuthIOException");
+			ge0.printStackTrace();
+		}
 		return rootId;
 	}
 	
