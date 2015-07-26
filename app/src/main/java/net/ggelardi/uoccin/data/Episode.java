@@ -294,6 +294,7 @@ public class Episode extends Title implements Comparable<Episode> {
 	}
 	
 	public boolean isToday() {
+		// Warning: here we are converting to local time zone, but not all shows in TheTVDB are predictable on time zone.
 		return DateUtils.isToday(Commons.convertTZ(firstAired, "UTC", TimeZone.getDefault().getID()));
 	}
 	

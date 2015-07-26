@@ -205,7 +205,7 @@ public class SeriesAdapter extends BaseAdapter implements Filterable {
 					R.drawable.ics_action_calendar : 0, 0, 0, 0);
 			}
 		}
-		vh.txt_info.setText(ser.airInfo());
+		vh.txt_info.setText(ser.airInfoLocalTime());
 		// check poster sizes and load it
 		if (pstHeight <= 1) {
 			view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),

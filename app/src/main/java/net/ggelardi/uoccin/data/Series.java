@@ -64,6 +64,7 @@ public class Series extends Title {
 	public long firstAired;
 	public int airsDay;
 	public long airsTime = -1;
+	public String airsTimeRaw = "";
 	public int runtime;
 	public String rated;
 	public String banner;
@@ -220,6 +221,7 @@ public class Series extends Title {
 		}
 		chk = Commons.XML.nodeText(serxml, "Airs_Time");
 		if (!TextUtils.isEmpty(chk)) {
+			airsTimeRaw = chk;
 			chk = chk.toUpperCase(Locale.getDefault()).replaceAll("P.M.", "PM").replace(".", ":").replace(" ", "");
 			String fmt = chk.length() <= 4 ? (chk.contains("M") ? "hha" : "HH") :
 				(chk.contains("M") ? "hh:mma" : "HH:mm");
@@ -323,9 +325,15 @@ public class Series extends Title {
 		ci = cr.getColumnIndex("airsDay");
 		if (!cr.isNull(ci))
 			airsDay = cr.getInt(ci);
+		/*
+		The problem of airsTime: https://forums.thetvdb.com/viewtopic.php?t=5052
+		 */
 		ci = cr.getColumnIndex("airsTime");
-		if (!cr.isNull(ci))
+		if (!cr.isNull(ci)) {
+			// airsTimeRaw = cr.getString(ci);
+			airsTimeRaw = "??";
 			airsTime = cr.getLong(ci);
+		}
 		ci = cr.getColumnIndex("runtime");
 		if (!cr.isNull(ci))
 			runtime = cr.getInt(ci);
@@ -687,11 +695,40 @@ public class Series extends Title {
 		}
 		return res;
 	}
+
+	/*
+	ToDo: Distinguish this more from airTime()
+	TheTVDB does not seem to hold TimeZone - and users populate whatever they wish.
+	A solution would be to cross-reference the GPS of the Android device, locate a local listing, then confirm show time.
+	Especially for upcoming in the next 48 hours.
+	 */
+	public String airTimeLocalTime() {
+		if (isEnded())
+			return session.getString(R.string.fmt_status_end);
+		String res = "N/A";
+		if (airsDay > 0 && airsTime >= 0) {
+			Calendar c1 = new GregorianCalendar(TimeZone.getDefault());
+			c1.setTimeZone(TimeZone.getDefault());
+			c1.setTimeInMillis(airsTime);
+			c1.set(Calendar.DAY_OF_WEEK, airsDay);
+			Calendar c2 = Calendar.getInstance();//new GregorianCalendar(TimeZone.getDefault());
+			c2.setTimeInMillis(c1.getTimeInMillis());
+			String outAirsTimeExtra = airsTime / 60L / 1000L / 60L + "";
+			res = Commons.SDF.loc(session.getString(R.string.fmt_airtime)).format(c2.getTime()) + " {" + airsTimeRaw + "}";
+		}
+		return res;
+	}
 	
 	public String airInfo() {
 		if (isEnded())
-			return session.getString(R.string.fmt_status_end);
+			return network + " - " + session.getString(R.string.fmt_status_end);
 		return (TextUtils.isEmpty(network) ? "N/A" : network) + " - " + airTime();
+	}
+
+	public String airInfoLocalTime() {
+		if (isEnded())
+			return network + " - " + session.getString(R.string.fmt_status_end);
+		return (TextUtils.isEmpty(network) ? "N/A" : network) + " ~ " + airTimeLocalTime();
 	}
 	
 	public String people() {
