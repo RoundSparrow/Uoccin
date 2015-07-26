@@ -15,6 +15,21 @@ android {
         multiDexEnabled true
     }
 
+
+    signingConfigs {
+
+        debug {
+            String homePathBase = "${System.properties['user.home']}${File.separator}";
+
+            println "********!! For debug build, using ${homePathBase}.android/debug.keystore"
+
+            storeFile file("${homePathBase}.android/debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    } /* signingConfigs */
+
     buildTypes {
         release {
             minifyEnabled true
