@@ -113,6 +113,7 @@ public class Storage extends SQLiteOpenHelper {
 		"firstAired" + DT_INT + CS +
 		"airsDay" + DT_INT + CS +
 		"airsTime" + DT_INT + CS +
+		"airsTimeRaw" + DT_STR + CS +
 		"runtime" + DT_INT + CS + // minutes
 		"rated" + DT_STR + CS +
 		"banner" + DT_STR + CS + // url

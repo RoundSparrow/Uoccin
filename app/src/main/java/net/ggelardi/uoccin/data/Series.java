@@ -334,6 +334,10 @@ public class Series extends Title {
 			airsTimeRaw = "?" + cr.getString(ci);
 			airsTime = cr.getLong(ci);
 		}
+		ci = cr.getColumnIndex("airsTimeRaw");
+		if (!cr.isNull(ci)) {
+			airsTimeRaw = cr.getString(ci);
+		}
 		ci = cr.getColumnIndex("runtime");
 		if (!cr.isNull(ci))
 			runtime = cr.getInt(ci);
@@ -430,7 +434,12 @@ public class Series extends Title {
 			cv.put("airsTime", airsTime);
 		else
 			cv.putNull("airsTime");
-		
+
+		if (airsTimeRaw != null)
+			cv.put("airsTimeRaw", airsTimeRaw);
+		else
+			cv.putNull("airsTimeRaw");
+
 		if (runtime > 0)
 			cv.put("runtime", runtime);
 		else
@@ -701,6 +710,7 @@ public class Series extends Title {
 	TheTVDB does not seem to hold TimeZone - and users populate whatever they wish.
 	A solution would be to cross-reference the GPS of the Android device, locate a local listing, then confirm show time.
 	Especially for upcoming in the next 48 hours.
+	ToDo; looks like "schedules direct" can be combined (cross-referenced) with TheTVDB data?
 	 */
 	public String airTimeLocalTime() {
 		if (isEnded())
