@@ -24,6 +24,7 @@ import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.Drive.Changes;
 import com.google.api.services.drive.Drive.Children;
@@ -41,18 +42,27 @@ public class GSA {
 	
 	public static final String FOLDER = "uoccin";
 	public static final String BACKUP = "uoccin.json";
-	
+
+	private static final String[] SCOPES = { DriveScopes.DRIVE };
+
 	private final Session session;
 	private final Drive service;
 	private String rootId;
 	private String deviceId;
+
+	GoogleAccountCredential credential;
+
 	
 	public GSA(Context context) throws Exception {
 		session = Session.getInstance(context);
-		GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(context,
-				Collections.singleton(DriveScopes.DRIVE));
+
+		credential = GoogleAccountCredential.usingOAuth2(
+				context.getApplicationContext(),
+				Arrays.asList(SCOPES));
 		credential.setSelectedAccountName(session.driveAccountName());
-		service = new Drive.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(),
+		credential.setBackOff(new ExponentialBackOff());
+
+		service = new Drive.Builder(AndroidHttp.newCompatibleTransport(), GsonFactory.getDefaultInstance(),
 			credential).setApplicationName(session.getString(R.string.app_name)).build();
 	}
 	
