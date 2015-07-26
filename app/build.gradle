@@ -8,14 +8,37 @@ android {
         applicationId "net.ggelardi.uoccin"
         minSdkVersion 16
         targetSdkVersion 22
+
+        versionCode 21
+        versionName "1.6.dev0"
+
         multiDexEnabled true
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
+        debug {
+            applicationIdSuffix ".debug"
+        }
+    }
+
+    productFlavors {
+        demo {
+            applicationId "net.ggelardi.uoccin.demo"
+            versionName "1.6-demo"
+        }
+        googleplay {
+            applicationId "net.ggelardi.uoccin.googleplay"
+            versionName "1.6-GP"
+        }
+        fdroid {
+            applicationId "net.ggelardi.uoccin.fdroid"
+            versionName "1.6-FD"
+        }
+        // ToDo: Amazon?
     }
 }
 
