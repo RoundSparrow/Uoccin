@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     private static final String PREF_ACCOUNT_NAME = "accountName";
-    private static final String[] SCOPES = { DriveScopes.DRIVE_METADATA_READONLY };
+    private static final String[] SCOPES = { DriveScopes.DRIVE };
 
     /**
      * Create the main activity.
